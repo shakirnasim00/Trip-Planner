@@ -1,0 +1,129 @@
+.card {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 3 / 4.15;
+  border-radius: 32px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #2a2a2a;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 24px 48px -16px rgba(0, 0, 0, 0.35);
+}
+.isNew { animation: arrive 900ms ease both; }
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Frosted, blurred version of the image behind the text */
+.glass {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 62%;
+  z-index: -1;
+  -webkit-backdrop-filter: blur(26px) saturate(1.15);
+  backdrop-filter: blur(26px) saturate(1.15);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.28) 35%, rgba(0, 0, 0, 0.62) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 32%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 32%);
+}
+
+.body { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 28px 28px; }
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  margin: 0 0 18px;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+}
+.tag svg { width: 15px; height: 15px; flex: none; }
+
+.explore {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 54px;
+  border-radius: 999px;
+  background: #fff;
+  color: #222;
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 150ms, box-shadow 150ms;
+}
+.explore:hover { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); }
+.explore:active { transform: scale(0.98); }
+
+.remove {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.92);
+  color: #222;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--float);
+  opacity: 0;
+  transition: opacity 160ms;
+}
+.remove svg { width: 14px; height: 14px; }
+.card:hover .remove, .remove:focus-visible { opacity: 1; }
+@media (hover: none) { .remove { opacity: 1; } }
+
+.newTrip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 220px;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.plus {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--cta);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 20px var(--cta-glow);
+  transition: transform 200ms, box-shadow 200ms;
+}
+.newTrip:hover .plus { transform: scale(1.06); }
+.plus svg { width: 26px; height: 26px; }

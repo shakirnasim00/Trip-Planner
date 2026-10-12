@@ -1,0 +1,48 @@
+/* Design tokens — change the brand colour here */
+:root {
+  --brand: #1F3A68;
+  --brand-deep: #14284B;
+  --cta: linear-gradient(to right, #2A4A80 0%, #1F3A68 50%, #172C52 100%);
+  --cta-glow: rgba(23, 44, 82, 0.3);
+
+  --bg: #FFFFFF;
+  --ink: #222222;
+  --muted: #6A6A6A;
+  --line: #DDDDDD;
+  --line-strong: #B0B0B0;
+  --fill: #F7F7F7;
+  --error: #C13515;
+  --float: 0 6px 16px rgba(0, 0, 0, 0.12);
+
+  --font: "DM Sans Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+button, input { font: inherit; color: inherit; }
+a { color: inherit; }
+img, svg { max-width: 100%; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    animation-delay: 0ms !important;
+  }
+}
