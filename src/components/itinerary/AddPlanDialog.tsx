@@ -33,6 +33,7 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
   const [kind, setKind] = useState<PlanKind | null>(null);
   const [back, setBack] = useState(false);
   const [title, setTitle] = useState("");
+  const [cost, setCost] = useState("");
   const [when, setWhen] = useState<When>("day");
   const [day, setDay] = useState("");
   const [start, setStart] = useState("");
@@ -63,6 +64,7 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
     setKind(null);
     setBack(false);
     setTitle("");
+    setCost("");
     setStart("");
     setEnd("");
     setError("");
@@ -84,9 +86,11 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
     const name = title.trim().replace(/\s+/g, " ");
     if (!kind) return;
     if (!name) return setError(`Give your ${PLAN_LABEL[kind].toLowerCase()} a name.`);
+    const price = parseCost(cost);
+    if (price === undefined) return setError("Enter a cost between $0 and $1,000,000, or leave it blank.");
 
     if (when === "unsure") {
-      updateTrip(trip.id, { todos: [...trip.todos, { id: newId(), text: name, done: false }] });
+      updateTrip(trip.id, { todos: [...trip.todos, { id: newId(), text: name, done: false, cost: price }] });
     } else {
       if (when === "time" && !start) return setError("Pick a start time.");
       if (when === "time" && end && toMinutes(end) <= toMinutes(start)) {
@@ -96,7 +100,15 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
       updateTrip(trip.id, {
         plans: [
           ...trip.plans,
-          { id: newId(), kind, title: name, day, start: timed ? start : null, end: timed && end ? end : null },
+          {
+            id: newId(),
+            kind,
+            title: name,
+            day,
+            start: timed ? start : null,
+            end: timed && end ? end : null,
+            cost: price,
+          },
         ],
       });
     }
@@ -141,23 +153,48 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
         </div>
       ) : (
         <div key="when" className={`${modal.modalBody} ${styles.step}`}>
-          <label className={modal.fieldLabel} htmlFor="plan-title">
-            Name
-          </label>
-          <input
-            id="plan-title"
-            className={styles.input}
-            value={title}
-            maxLength={80}
-            autoFocus
-            autoComplete="off"
-            placeholder={PLACEHOLDER[kind]}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              setError("");
-            }}
-            onKeyDown={(e) => e.key === "Enter" && save()}
-          />
+          <div className={styles.nameRow}>
+            <div>
+              <label className={modal.fieldLabel} htmlFor="plan-title">
+                Name
+              </label>
+              <input
+                id="plan-title"
+                className={styles.input}
+                value={title}
+                maxLength={80}
+                autoFocus
+                autoComplete="off"
+                placeholder={PLACEHOLDER[kind]}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setError("");
+                }}
+                onKeyDown={(e) => e.key === "Enter" && save()}
+              />
+            </div>
+            <div>
+              <label className={modal.fieldLabel} htmlFor="plan-cost">
+                Cost <em className={styles.optional}>(optional)</em>
+              </label>
+              <div className={`${modal.money} ${styles.cost}`}>
+                <span>$</span>
+                <input
+                  id="plan-cost"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  placeholder="0"
+                  value={cost}
+                  onChange={(e) => {
+                    setCost(e.target.value.replace(/\$/g, ""));
+                    setError("");
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && save()}
+                />
+                <small>CAD</small>
+              </div>
+            </div>
+          </div>
 
           <h3 className={styles.question}>When?</h3>
           <div className={styles.segments} role="radiogroup" aria-label="When">
@@ -215,7 +252,7 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
                   </label>
                   <label>
                     <span className={modal.fieldLabel}>
-                      Ends <em>(optional)</em>
+                      Ends <em className={styles.optional}>(optional)</em>
                     </span>
                     <input
                       type="time"
@@ -242,4 +279,14 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
       )}
     </dialog>
   );
+}
+
+/** "$1,250.50" → 1250.5; blank → null; anything invalid → undefined */
+function parseCost(input: string): number | null | undefined {
+  const raw = input.replace(/[$,\s]/g, "");
+  if (raw === "") return null;
+  if (!/^\d*\.?\d{0,2}$/.test(raw)) return undefined;
+  const amount = Number(raw);
+  if (!Number.isFinite(amount) || amount > 1_000_000) return undefined;
+  return Math.round(amount * 100) / 100;
 }

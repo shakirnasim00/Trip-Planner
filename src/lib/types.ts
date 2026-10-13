@@ -4,6 +4,8 @@ export interface Todo {
   id: string;
   text: string;
   done: boolean;
+  /** Cost in CAD, when it came from an unscheduled itinerary plan with a cost entered */
+  cost?: number | null;
 }
 
 export type PlanKind = "flight" | "stay" | "activity";
@@ -19,6 +21,8 @@ export interface Plan {
   start: string | null;
   /** "HH:MM" (24h); null means it shows as one hour long */
   end: string | null;
+  /** Cost in CAD, or null if not entered. Not shown on the calendar. */
+  cost: number | null;
 }
 
 export interface Invite {

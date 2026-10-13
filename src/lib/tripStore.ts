@@ -24,7 +24,7 @@ function normalize(raw: Partial<Trip>): Trip {
     photo: raw.photo ?? null,
     budget: raw.budget ?? null,
     todos: raw.todos ?? [],
-    plans: raw.plans ?? [],
+    plans: (raw.plans ?? []).map((p) => ({ ...p, cost: p.cost ?? null })),
     invites: raw.invites ?? [],
     createdAt: raw.createdAt ?? new Date().toISOString(),
   };

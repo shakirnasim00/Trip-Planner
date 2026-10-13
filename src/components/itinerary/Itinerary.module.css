@@ -178,7 +178,13 @@ main.page { max-width: 1280px; }
 @keyframes stepBack { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
 
 .question { font-size: 22px; font-weight: 600; letter-spacing: -0.2px; margin: 0 0 20px; }
-.input + .question { margin-top: 28px; margin-bottom: 14px; }
+.nameRow + .question { margin-top: 28px; margin-bottom: 14px; }
+
+.nameRow { display: grid; grid-template-columns: minmax(0, 1fr) 168px; gap: 12px; }
+@media (max-width: 480px) { .nameRow { grid-template-columns: 1fr; } }
+.optional { font-style: normal; font-weight: 400; color: var(--muted); }
+.cost { height: 48px; font-size: 16px; }
+.cost small { font-size: 12px; }
 
 .kinds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 @media (max-width: 480px) { .kinds { grid-template-columns: 1fr; } }
@@ -274,7 +280,6 @@ main.page { max-width: 1280px; }
 .dayChips button[aria-checked="true"] span { color: rgba(255, 255, 255, 0.75); }
 
 .times { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
-.times em { font-style: normal; font-weight: 400; color: var(--muted); }
 
 .saveWide { width: 100%; margin-top: 8px; padding: 14px 22px; font-size: 16px; }
 
