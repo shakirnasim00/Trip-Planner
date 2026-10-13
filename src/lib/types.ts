@@ -4,11 +4,13 @@ export interface Todo {
   id: string;
   text: string;
   done: boolean;
+  /** Set when added from the itinerary as "Not sure when"; these show under Play it by Ear */
+  kind?: PlanKind;
   /** Cost in CAD, when it came from an unscheduled itinerary plan with a cost entered */
   cost?: number | null;
 }
 
-export type PlanKind = "flight" | "stay" | "activity";
+export type PlanKind = "flight" | "stay" | "activity" | "road";
 
 /** Something scheduled on the itinerary. Plans with no day go to the trip's todos instead. */
 export interface Plan {
@@ -57,4 +59,5 @@ export const PLAN_LABEL: Record<PlanKind, string> = {
   flight: "Flight",
   stay: "Accommodation",
   activity: "Activity",
+  road: "Road",
 };

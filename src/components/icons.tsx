@@ -137,7 +137,15 @@ export const ActivityIcon = (p: P) => (
   </svg>
 );
 
+export const CarIcon = (p: P) => (
+  <svg {...base} fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" {...p}>
+    <path d="M4 23v-7l3.5-7.5h17L28 16v7M4 23h2.5M25.5 23H28M13.5 23h5M4 16h24" />
+    <circle cx="10" cy="23" r="3" />
+    <circle cx="22" cy="23" r="3" />
+  </svg>
+);
+
 export const PlanIcon = ({ kind, ...p }: P & { kind: PlanKind }) => {
-  const Icon = { flight: FlightIcon, stay: StayIcon, activity: ActivityIcon }[kind];
+  const Icon = { flight: FlightIcon, stay: StayIcon, activity: ActivityIcon, road: CarIcon }[kind];
   return <Icon {...p} />;
 };

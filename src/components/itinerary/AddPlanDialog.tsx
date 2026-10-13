@@ -15,17 +15,18 @@ interface Props {
   days: string[];
   open: boolean;
   onClose: () => void;
-  /** Called after saving; `unscheduled` means it went to Things to do instead of the calendar */
+  /** Called after saving; `unscheduled` means it went to Play it by Ear instead of the calendar */
   onSaved: (unscheduled: boolean) => void;
 }
 
 type When = "day" | "time" | "unsure";
 
-const KINDS: PlanKind[] = ["flight", "stay", "activity"];
+const KINDS: PlanKind[] = ["flight", "stay", "activity", "road"];
 const PLACEHOLDER: Record<PlanKind, string> = {
   flight: "e.g. Flight to Paris",
   stay: "e.g. Hotel Le Marais",
   activity: "e.g. Louvre Museum",
+  road: "e.g. Drive to Normandy",
 };
 
 export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Props) {
@@ -90,7 +91,7 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
     if (price === undefined) return setError("Enter a cost between $0 and $1,000,000, or leave it blank.");
 
     if (when === "unsure") {
-      updateTrip(trip.id, { todos: [...trip.todos, { id: newId(), text: name, done: false, cost: price }] });
+      updateTrip(trip.id, { todos: [...trip.todos, { id: newId(), text: name, done: false, kind, cost: price }] });
     } else {
       if (when === "time" && !start) return setError("Pick a start time.");
       if (when === "time" && end && toMinutes(end) <= toMinutes(start)) {
@@ -223,8 +224,8 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
           {when === "unsure" ? (
             <p className={styles.hint}>
               {hasDays
-                ? "We'll save it to Things to do on your trip page, so you can schedule it later."
-                : "Your trip doesn't have dates yet, so we'll save it to Things to do on your trip page."}
+                ? "We'll keep it under Play it by Ear, below your calendar, so you can schedule it later."
+                : "Your trip doesn't have dates yet, so we'll keep it under Play it by Ear for now."}
             </p>
           ) : (
             <div className={styles.whenFields} key={when}>
@@ -273,7 +274,7 @@ export default function AddPlanDialog({ trip, days, open, onClose, onSaved }: Pr
             {error}
           </p>
           <button className={`${modal.saveBtn} ${styles.saveWide}`} onClick={save}>
-            {when === "unsure" ? "Save to Things to do" : "Add to itinerary"}
+            {when === "unsure" ? "Add to Play it by Ear" : "Add to itinerary"}
           </button>
         </div>
       )}

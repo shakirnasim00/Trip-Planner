@@ -29,7 +29,7 @@ Then open http://localhost:3000.
 | `/` | Your trips — trip cards and the Plan a New Trip button |
 | `/trips/new` | New-trip flow: destination → dates → group size → photo |
 | `/trips/[id]` | Trip details — title, photo, dates, who's going, budget, things to do |
-| `/trips/[id]/itinerary` | Itinerary — day-by-day calendar, Add activity (flight / accommodation / activity) |
+| `/trips/[id]/itinerary` | Itinerary — day-by-day calendar, Add activity (flight / accommodation / activity / road), Play it by Ear |
 
 ## Project structure
 
@@ -48,7 +48,7 @@ src/
     icons.tsx               All SVG icons
     planner/                New-trip flow steps (calendar, party picker, photo drop)
     trip/                   Trip details sections (budget, things to do, who's going, invite dialog)
-    itinerary/              Day calendar + Add activity dialog
+    itinerary/              Day calendar, Add activity dialog, Play it by Ear
   lib/
     tripStore.ts            <- all trip data reads/writes go through here
     types.ts                Trip, Plan, Todo, Invite, Party
