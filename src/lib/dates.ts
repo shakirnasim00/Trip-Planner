@@ -44,3 +44,34 @@ export function startOfToday(): Date {
   d.setHours(0, 0, 0, 0);
   return d;
 }
+
+export function addDays(iso: string, n: number): string {
+  const d = parseIso(iso);
+  d.setDate(d.getDate() + n);
+  return toIso(d);
+}
+
+/** Every date of the trip, first to last day inclusive */
+export function tripDays(start: string, end: string): string[] {
+  return Array.from({ length: nightsBetween(start, end) + 1 }, (_, i) => addDays(start, i));
+}
+
+/** 1 → "1st", 22 → "22nd", 13 → "13th" */
+export function ordinal(n: number): string {
+  const tens = n % 100;
+  if (tens >= 11 && tens <= 13) return `${n}th`;
+  return `${n}${["th", "st", "nd", "rd"][n % 10] ?? "th"}`;
+}
+
+/** "HH:MM" → minutes since midnight */
+export function toMinutes(time: string): number {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+
+/** "14:30" → "2:30 PM", "09:00" → "9 AM" */
+export function fmtTime(time: string): string {
+  const [h, m] = time.split(":").map(Number);
+  const hour = h % 12 || 12;
+  return `${hour}${m ? `:${String(m).padStart(2, "0")}` : ""} ${h < 12 ? "AM" : "PM"}`;
+}

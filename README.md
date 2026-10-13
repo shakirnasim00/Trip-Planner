@@ -29,7 +29,7 @@ Then open http://localhost:3000.
 | `/` | Your trips — trip cards and the Plan a New Trip button |
 | `/trips/new` | New-trip flow: destination → dates → group size → photo |
 | `/trips/[id]` | Trip details — title, photo, dates, who's going, budget, things to do |
-| `/trips/[id]/itinerary` | Itinerary (placeholder, next to build) |
+| `/trips/[id]/itinerary` | Itinerary — day-by-day calendar, Add activity (flight / accommodation / activity) |
 
 ## Project structure
 
@@ -40,7 +40,7 @@ src/
     page.tsx                Home
     trips/new/page.tsx      New-trip flow
     trips/[id]/page.tsx     Trip details
-    trips/[id]/itinerary/   Itinerary (placeholder)
+    trips/[id]/itinerary/   Itinerary (day-by-day calendar)
   components/
     Header.tsx              Top bar (logo + account / Exit)
     TripCard.tsx            Home trip card + Plan a New Trip button
@@ -48,9 +48,10 @@ src/
     icons.tsx               All SVG icons
     planner/                New-trip flow steps (calendar, party picker, photo drop)
     trip/                   Trip details sections (budget, things to do, who's going, invite dialog)
+    itinerary/              Day calendar + Add activity dialog
   lib/
     tripStore.ts            <- all trip data reads/writes go through here
-    types.ts                Trip, Todo, Invite, Party
+    types.ts                Trip, Plan, Todo, Invite, Party
     dates.ts, money.ts      Formatting helpers
     image.ts                Shrinks uploaded photos
     cover.ts                Generated cover art
@@ -77,7 +78,8 @@ Every read and write goes through `src/lib/tripStore.ts` (`useTrips`, `useTrip`,
 
 ## Next up
 
-- [ ] Itinerary page
+- [x] Itinerary page
+- [ ] Edit / drag plans on the itinerary
 - [ ] Login / auth
 - [ ] Database + API (replace `tripStore.ts`)
 - [ ] Photo uploads to file storage (S3 / Cloudinary) instead of inline data

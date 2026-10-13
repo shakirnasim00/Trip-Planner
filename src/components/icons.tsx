@@ -1,5 +1,5 @@
 import type { SVGProps } from "react";
-import type { Party } from "@/lib/types";
+import type { Party, PlanKind } from "@/lib/types";
 
 type P = SVGProps<SVGSVGElement>;
 const base = { viewBox: "0 0 32 32", "aria-hidden": true } as const;
@@ -114,5 +114,30 @@ const GroupIcon = ({ strokeWidth = 2, ...p }: P) => (
 
 export const PartyIcon = ({ party, ...p }: P & { party: Party }) => {
   const Icon = { solo: SoloIcon, duo: DuoIcon, group: GroupIcon }[party];
+  return <Icon {...p} />;
+};
+
+export const FlightIcon = (p: P) => (
+  <svg {...base} fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinejoin="round" {...p}>
+    <path d="M16 3c1.2 0 2 1 2 2.5V12l10 6v3l-10-3v6l3 2.5V29l-5-1.5-5 1.5v-2.5l3-2.5v-6L4 21v-3l10-6V5.5C14 4 14.8 3 16 3z" />
+  </svg>
+);
+
+export const StayIcon = (p: P) => (
+  <svg {...base} fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" {...p}>
+    <path d="M3 7v20M3 21h26v6M29 21v-5a4 4 0 0 0-4-4H14v9" />
+    <circle cx="8.5" cy="15.5" r="2.5" />
+  </svg>
+);
+
+export const ActivityIcon = (p: P) => (
+  <svg {...base} fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinejoin="round" {...p}>
+    <path d="M4 10a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3a3 3 0 0 0 0 6v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a3 3 0 0 0 0-6z" />
+    <path d="M20 9v14" strokeDasharray="2.5 2.5" />
+  </svg>
+);
+
+export const PlanIcon = ({ kind, ...p }: P & { kind: PlanKind }) => {
+  const Icon = { flight: FlightIcon, stay: StayIcon, activity: ActivityIcon }[kind];
   return <Icon {...p} />;
 };

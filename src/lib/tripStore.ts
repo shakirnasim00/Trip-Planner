@@ -24,6 +24,7 @@ function normalize(raw: Partial<Trip>): Trip {
     photo: raw.photo ?? null,
     budget: raw.budget ?? null,
     todos: raw.todos ?? [],
+    plans: raw.plans ?? [],
     invites: raw.invites ?? [],
     createdAt: raw.createdAt ?? new Date().toISOString(),
   };

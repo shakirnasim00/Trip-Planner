@@ -73,6 +73,7 @@ export default function NewTripPage() {
       photo: draft.photo,
       budget: null,
       todos: [],
+      plans: [],
       invites: [],
       createdAt: new Date().toISOString(),
     });

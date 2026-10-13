@@ -7,6 +7,7 @@ import { ChevronLeft, ItineraryIcon } from "@/components/icons";
 import TripCover from "@/components/TripCover";
 import BudgetCard from "@/components/trip/BudgetCard";
 import ThingsToDo from "@/components/trip/ThingsToDo";
+import TripNotFound from "@/components/trip/TripNotFound";
 import styles from "@/components/trip/TripDetails.module.css";
 import WhosGoing from "@/components/trip/WhosGoing";
 import { longRange, nightsBetween } from "@/lib/dates";
@@ -59,23 +60,6 @@ export default function TripDetailsPage() {
             <BudgetCard trip={trip} />
             <ThingsToDo trip={trip} />
           </aside>
-        </div>
-      </main>
-    </>
-  );
-}
-
-function TripNotFound() {
-  return (
-    <>
-      <Header />
-      <main className={styles.details}>
-        <div className={styles.notFound}>
-          <h1>This trip doesn&apos;t exist</h1>
-          <p>It may have been removed, or it was saved in a different browser.</p>
-          <Link href="/" className={styles.outlineBtn}>
-            Back to your trips
-          </Link>
         </div>
       </main>
     </>
