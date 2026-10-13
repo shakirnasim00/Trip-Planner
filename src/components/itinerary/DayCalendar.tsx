@@ -4,7 +4,7 @@ import { type CSSProperties, useLayoutEffect, useRef } from "react";
 import { fmt, fmtTime, ordinal, parseIso, toIso, toMinutes } from "@/lib/dates";
 import { updateTrip } from "@/lib/tripStore";
 import type { Plan, Trip } from "@/lib/types";
-import { CloseIcon, PlanIcon } from "../icons";
+import Capsule from "./Capsule";
 import styles from "./Itinerary.module.css";
 
 interface Props {
@@ -53,7 +53,7 @@ export default function DayCalendar({ trip, days }: Props) {
                 <ul className={styles.allDay}>
                   {allDay.map((p) => (
                     <li key={p.id}>
-                      <Capsule plan={p} onRemove={remove} />
+                      <Capsule kind={p.kind} title={p.title} onRemove={() => remove(p)} />
                     </li>
                   ))}
                 </ul>
@@ -72,7 +72,14 @@ export default function DayCalendar({ trip, days }: Props) {
         {days.map((day) => (
           <div key={day} className={styles.track}>
             {stack(trip.plans.filter((p) => p.day === day && p.start)).map(({ plan, top }) => (
-              <Capsule key={plan.id} plan={plan} onRemove={remove} style={{ top }} />
+              <Capsule
+                key={plan.id}
+                kind={plan.kind}
+                title={plan.title}
+                detail={timeLabel(plan)}
+                onRemove={() => remove(plan)}
+                style={{ top }}
+              />
             ))}
           </div>
         ))}
@@ -81,26 +88,9 @@ export default function DayCalendar({ trip, days }: Props) {
   );
 }
 
-function Capsule({ plan, onRemove, style }: { plan: Plan; onRemove: (p: Plan) => void; style?: CSSProperties }) {
-  return (
-    <div className={`${styles.capsule} ${styles[plan.kind]}`} style={style}>
-      <span className={styles.capsuleIcon}>
-        <PlanIcon kind={plan.kind} />
-      </span>
-      <span className={styles.capsuleText}>
-        <strong>{plan.title}</strong>
-        {plan.start && (
-          <span>
-            {fmtTime(plan.start)}
-            {plan.end && ` – ${fmtTime(plan.end)}`}
-          </span>
-        )}
-      </span>
-      <button className={styles.remove} aria-label={`Remove ${plan.title}`} onClick={() => onRemove(plan)}>
-        <CloseIcon />
-      </button>
-    </div>
-  );
+function timeLabel(plan: Plan): string | undefined {
+  if (!plan.start) return undefined;
+  return plan.end ? `${fmtTime(plan.start)} – ${fmtTime(plan.end)}` : fmtTime(plan.start);
 }
 
 /** Place each capsule at its start time, nudging it down when it would sit on top of the one before. */

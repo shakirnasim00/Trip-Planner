@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import { CalendarIcon, ChevronLeft, PlusIcon } from "@/components/icons";
 import AddPlanDialog from "@/components/itinerary/AddPlanDialog";
 import DayCalendar from "@/components/itinerary/DayCalendar";
+import PlayItByEar from "@/components/itinerary/PlayItByEar";
 import styles from "@/components/itinerary/Itinerary.module.css";
 import details from "@/components/trip/TripDetails.module.css";
 import TripNotFound from "@/components/trip/TripNotFound";
@@ -63,9 +64,11 @@ export default function ItineraryPage() {
           <div className={styles.empty}>
             <CalendarIcon />
             <h2>Your days will show up here</h2>
-            <p>This trip doesn&apos;t have dates yet. Anything you add for now goes to Things to do on your trip page.</p>
+            <p>This trip doesn&apos;t have dates yet. Anything you add for now goes under Play it by Ear, below.</p>
           </div>
         )}
+
+        <PlayItByEar trip={trip} />
       </main>
 
       <AddPlanDialog
@@ -77,10 +80,10 @@ export default function ItineraryPage() {
       />
 
       <div className={`${styles.toast} ${toast ? styles.toastIn : ""}`} role="status" aria-hidden={!toast}>
-        Saved to Things to do
-        <Link href={`/trips/${trip.id}`} tabIndex={toast ? 0 : -1}>
+        Added to Play it by Ear
+        <a href="#play-it-by-ear" tabIndex={toast ? 0 : -1}>
           View
-        </Link>
+        </a>
       </div>
     </>
   );
